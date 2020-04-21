@@ -1,0 +1,151 @@
+.feed {
+	position: relative;
+	margin: auto;
+	top: 50px;
+	width: 80%;
+	min-height: 1000px;
+	background-color: white;
+}
+
+#editPage{
+	overflow-x: hidden;
+}
+
+#pic{
+	position: absolute;
+	top: 18%;
+	right: 44%;
+	width:10%;
+	height:10%;
+}
+
+#currname{
+	position: absolute;
+	width: 100%;
+	text-align: center;
+	top: 35%;
+	color: white;
+}
+
+#changePic{
+	position: absolute;
+	top: 42%;
+	right: 40%;
+	width: 20%;
+}
+
+#changePic button{
+	background: transparent;
+    -webkit-transition-duration: 0.4s; /* Safari */
+    transition-duration: 0.4s;
+    color: white;
+    border: 2px solid white;
+    padding: 15px 28px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 15px;
+    border-radius: 4px;
+}
+
+#changePic button:hover {
+    background-color: #00bfa5;
+    border: 2px solid #00bfa5;
+}
+
+.aSave Button{
+	float: left;
+	margin-left: 10%;
+	width: 100%;
+}
+
+.aCancel Button{
+	float: right;
+	margin-right: 15%;
+	width: 100%;
+}
+
+#cancelBtn{
+	position: relative;
+	float: right;
+	right: 10%;
+	z-index: 1;
+}
+
+#cancelBtn Button{
+	width: 100%;
+}
+
+#abtHeader{
+	position: relative;
+	left: 10%;
+}
+
+#editTables{
+	max-width: 100%;
+  	/*overflow: scroll;*/
+}
+
+#stick{
+	
+	background-color: #eee;
+	position: sticky;
+	top: -1px;
+	z-index: 2;
+}
+table {
+  position: relative;
+  border: 1px solid #ddd;
+  border-collapse: collapse;
+}
+
+td, th {
+  border: 1px solid #ddd;
+  padding: 20px;
+  text-align: center;
+}
+
+#editTables #editTable1{
+	width: 50%;
+	padding: 0% 5% 0% 10%;
+	float: left;
+}
+
+#editTables #editTable2{
+	width: 50%;
+	padding: 0% 10% 0% 0%;
+	float: right;
+}
+
+Button{
+	width: 100%;
+}
+
+#saveChanges{
+	width: 100%;
+	padding-left: 43%;
+	padding-right: 43%;
+	padding-bottom: 3%;
+}
+
+#getPw{
+	position: relative;
+	margin-left: 20%;
+	margin-right: 20%;
+}
+
+#getPw p{
+	text-align: center;
+}
+
+.uploadPicForm{
+	padding: 0% 12% 0% 10%;
+}
+
+#editModal{
+	height: 50% !important;
+}
+
+#editModal2{
+	height: 40% !important;
+}

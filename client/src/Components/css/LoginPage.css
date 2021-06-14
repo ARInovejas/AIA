@@ -7,6 +7,13 @@
     padding:1em;
 }
 
+.titlePage {
+	position: relative;
+	margin: auto;
+	text-align: center;
+	background-color:rgb(247, 233, 221);
+}
+
 #stick{
 	background-color: #eee;
 	position: sticky;

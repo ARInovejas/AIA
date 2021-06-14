@@ -16,32 +16,33 @@
 /*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
 
 --
--- Table structure for table `item`
+-- Table structure for table `foe`
 --
-
-DROP TABLE IF EXISTS `item`;
+use aia;
+DROP TABLE IF EXISTS `foe`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
-CREATE TABLE `item` (
+CREATE TABLE `foe` (
   `empno` int(11) NOT NULL,
   `itemanalysis_id` int(11) NOT NULL,
+  `foe_id` int(11) NOT NULL,
   `item_number` int(11) NOT NULL,
   `frequency_of_error` int(11) NOT NULL,
-  PRIMARY KEY (`item_number`),
-  KEY `item_empno_fk` (`empno`),
-  KEY `item_itemanalysis_id_fk` (`itemanalysis_id`),
-  CONSTRAINT `item_empno_fk` FOREIGN KEY (`empno`) REFERENCES `itemanalysis` (`empno`) ON DELETE CASCADE ON UPDATE CASCADE,
-  CONSTRAINT `item_itemanalysis_id_fk` FOREIGN KEY (`itemanalysis_id`) REFERENCES `itemanalysis` (`itemanalysis_id`) ON DELETE CASCADE ON UPDATE CASCADE
+  PRIMARY KEY (`foe_id`),
+  KEY `foe_empno_fk` (`empno`),
+  KEY `foe_itemanalysis_id_fk` (`itemanalysis_id`),
+  CONSTRAINT `foe_empno_fk` FOREIGN KEY (`empno`) REFERENCES `teacher` (`empno`) ON DELETE CASCADE ON UPDATE CASCADE,
+  CONSTRAINT `foe_itemanalysis_id_fk` FOREIGN KEY (`itemanalysis_id`) REFERENCES `itemanalysis` (`itemanalysis_id`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Dumping data for table `item`
+-- Dumping data for table `foe`
 --
 
-LOCK TABLES `item` WRITE;
-/*!40000 ALTER TABLE `item` DISABLE KEYS */;
-/*!40000 ALTER TABLE `item` ENABLE KEYS */;
+LOCK TABLES `foe` WRITE;
+/*!40000 ALTER TABLE `foe` DISABLE KEYS */;
+/*!40000 ALTER TABLE `foe` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 

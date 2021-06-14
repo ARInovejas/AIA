@@ -16,32 +16,34 @@
 /*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
 
 --
--- Table structure for table `score_distrib`
+-- Table structure for table `rawscore`
 --
-
-DROP TABLE IF EXISTS `score_distrib`;
+use aia;
+DROP TABLE IF EXISTS `rawscore`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
-CREATE TABLE `score_distrib` (
+CREATE TABLE `rawscore` (
   `empno` int(11) NOT NULL,
   `itemanalysis_id` int(11) NOT NULL,
-  `rawscore` int(11) NOT NULL,
-  `students_with_rawscore` int(11) NOT NULL DEFAULT '0',
-  PRIMARY KEY (`rawscore`),
-  KEY `score_distrib_empno_fk` (`empno`),
-  KEY `scoredistrib_itemanalysis_id_fk` (`itemanalysis_id`),
-  CONSTRAINT `score_distrib_empno_fk` FOREIGN KEY (`empno`) REFERENCES `itemanalysis` (`empno`) ON DELETE CASCADE ON UPDATE CASCADE,
-  CONSTRAINT `scoredistrib_itemanalysis_id_fk` FOREIGN KEY (`itemanalysis_id`) REFERENCES `itemanalysis` (`itemanalysis_id`) ON DELETE CASCADE ON UPDATE CASCADE
+  `rawscore_id` int(11) NOT NULL,
+  `rawscore_number` int(11) NOT NULL,
+  `students_with_rawscore` int(11) NOT NULL,
+  `product` int(11) NOT NULL,
+  PRIMARY KEY (`rawscore_id`),
+  KEY `item_empno_fk` (`empno`),
+  KEY `item_itemanalysis_id_fk` (`itemanalysis_id`),
+  CONSTRAINT `item_empno_fk` FOREIGN KEY (`empno`) REFERENCES `itemanalysis` (`empno`) ON DELETE CASCADE ON UPDATE CASCADE,
+  CONSTRAINT `item_itemanalysis_id_fk` FOREIGN KEY (`itemanalysis_id`) REFERENCES `itemanalysis` (`itemanalysis_id`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Dumping data for table `score_distrib`
+-- Dumping data for table `rawscore`
 --
 
-LOCK TABLES `score_distrib` WRITE;
-/*!40000 ALTER TABLE `score_distrib` DISABLE KEYS */;
-/*!40000 ALTER TABLE `score_distrib` ENABLE KEYS */;
+LOCK TABLES `rawscore` WRITE;
+/*!40000 ALTER TABLE `rawscore` DISABLE KEYS */;
+/*!40000 ALTER TABLE `rawscore` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 
@@ -53,4 +55,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2020-04-20 18:12:37
+-- Dump completed on 2020-04-20 18:12:36

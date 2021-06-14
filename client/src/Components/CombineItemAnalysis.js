@@ -2,6 +2,7 @@
 import React, { Component, useState } from 'react';
 import {Link} from 'react-router-dom';
 import { CSVLink } from 'react-csv';
+import CSVReader from 'react-csv-reader';
 import './css/ItemAnalysis.css';
 
 var autoBind = require('auto-bind');
@@ -33,7 +34,7 @@ var headers = [
 ]
 
 var data = [];
-class ItemAnalysis extends Component{
+class CombineItemAnalysis extends Component{
   constructor(props){
     super(props)
     this.state = {
@@ -51,7 +52,9 @@ class ItemAnalysis extends Component{
       item_foe: item_freq.slice(),
       num_of_studs_rawscore: nswgrs.slice(),
       product: nswgrs.slice(),
-      rank: rank_arr.slice()
+      rank: rank_arr.slice(),
+      number_of_files: 0,
+      filearray: []
     }
     autoBind(this);
   }
@@ -68,39 +71,7 @@ class ItemAnalysis extends Component{
 
   subjectHandler(e){
     this.setState({subject: e.target.value}, this.arrangeData);
-    
-  }
 
-  numitemsHandler(e) {
-    var val = parseInt(e.target.value);
-    this.setState({number_of_items: val});
-    item_freq = [];
-    nswgrs = [];
-    rank_arr = [];
-    for (var i = 0; i < val; i++) {
-      item_freq.push(0)
-      nswgrs.push(0)
-      rank_arr.push(null)
-    }
-    nswgrs.push(0);
-
-    this.setState({
-      item_foe: item_freq.slice(),
-      num_of_studs_rawscore: nswgrs.slice()(),
-      product: nswgrs.slice(),
-      rank: rank_arr.slice()
-    }, this.arrangeData);
-    
-  }
-
-  itemHandler(e) {
-    var val = parseInt(e.target.value);
-    var foe = this.state.item_foe;
-    foe[e.target.id] = val;
-    this.setState({item_foe: foe});
-    
-    var rankarray = this.updateRank(foe);
-    this.setState({rank: rankarray}, this.arrangeData);
   }
 
   updateRank(foe){
@@ -132,46 +103,7 @@ class ItemAnalysis extends Component{
     return rankarray;
   }
 
-  totalHandler(e) {
-    this.setState({total_num_of_students: parseInt(e.target.value)});
-
-    var meanval = this.computeMean(e.target.value);
-
-    this.setState({mean: meanval}, () => {this.updateStudents(Math.round(meanval))});
-  }
-
-  scoreHandler(e) {
-    var val = parseInt(e.target.value);
-    var stdnts = this.state.num_of_studs_rawscore;
-    var prod = this.state.product;
-    stdnts[e.target.id] = val;
-    prod[e.target.id] = e.target.id * val;
-    
-    var total = this.state.total_num_of_students;
-    var meanval = this.computeMean(total);
-    
-    this.setState({
-      num_of_studs_rawscore: stdnts,
-      product: prod,
-      mean: meanval
-    }, () => {this.updateStudents(Math.round(meanval))});
-    
-  }
-
-  computeMean(total){
-    var prod = this.state.product;
-    var sum = 0;
-    for (let i = 0; i < prod.length; i++) {
-      sum += prod[i];
-    }
-    this.setState({total_rawscore: sum});
-    var meanval = sum/total;
-
-    return meanval;
-  }
-
-  updateStudents(mean){
-    var stdnts = this.state.num_of_studs_rawscore;
+  updateStudents(mean, stdnts){
 
     this.setState({students_equals_mean: stdnts[mean]});
 
@@ -200,11 +132,11 @@ class ItemAnalysis extends Component{
       table_d.push( 
           <tr>
             <td >{i+1} </td>
-            <td> <input type="number" key={i} id={i} defaultValue={0} onChange={this.itemHandler}></input> </td>
+            <td> {this.state.item_foe[i]} </td>
             <td>{this.state.rank[i]}</td>
             <td>{num_items-i} </td>
-            <td> <input type="number" key={num_items-i} id={num_items-i} defaultValue={0} onChange={this.scoreHandler}></input> </td>
-            <td>{this.state.product[num_items-i]} </td>
+            <td> {this.state.num_of_studs_rawscore[i]} </td>
+            <td>{this.state.product[i]} </td>
           </tr>
       )
     }
@@ -214,8 +146,8 @@ class ItemAnalysis extends Component{
         <td></td>
         <td></td>
         <td>0</td>
-        <td> <input type="number" key={0} id={0} defaultValue={0} onChange={this.scoreHandler}></input> </td>
-        <td>{this.state.product[0]} </td>
+        <td> {this.state.num_of_studs_rawscore[num_items]} </td>
+        <td>{this.state.product[num_items]} </td>
       </tr>
       )
       table_d.push(
@@ -230,6 +162,74 @@ class ItemAnalysis extends Component{
         )
     return table_d;
     
+  }
+
+
+  handleFiles(filedata, fileInfo){
+    var total_files = this.state.number_of_files+1;
+    this.setState({number_of_files: total_files});
+    var farray = this.state.filearray;
+    farray.push(filedata);
+    this.setState({filearray: farray});
+  }
+
+  handleMerge(){
+    var total_files = this.state.number_of_files;
+    var farray = this.state.filearray;
+
+    var nofItems = farray[0].length - 4;
+    this.setState({number_of_items: nofItems});
+    var nofStudents = 0;
+    var total_rscore = 0;
+
+    var foeSum = 0;
+    var nswgrsSum = 0;
+
+    var foeArr = [];
+    var nswgrsArr = [];
+    var prodArr = [];
+    
+    for (let i = 1; i < (farray[0].length - 2); i++) {
+      if(i == 1){
+        for (let j = 0; j < total_files; j++) {
+          nofStudents += parseInt(farray[j][i][2]);
+        }
+      }else{
+        // foe=4, rawscore=6, nswgrs=7
+        for (let j = 0; j < total_files; j++) {
+          const element = farray[j][i];
+          foeSum += parseInt(element[4]);
+          nswgrsSum += parseInt(element[7]);
+          
+        }
+        foeArr.push(foeSum);
+        nswgrsArr.push(nswgrsSum);
+        prodArr.push(nswgrsSum * parseInt(farray[0][i][6]));
+        foeSum=0;
+        nswgrsSum=0;
+      }
+    };
+    for (let i = 0; i < total_files; i++) {
+      const element = farray[i][farray[0].length-2];
+      nswgrsSum += parseInt(element[7]);
+    }
+    nswgrsArr.push(nswgrsSum);
+    prodArr.push(0);
+    for (let i = 0; i < total_files; i++) {
+      const element = farray[i][farray[0].length-1];
+      total_rscore += parseInt(element[8]);
+      
+    }
+    this.setState({
+      total_num_of_students: nofStudents,
+      item_foe: foeArr,
+      num_of_studs_rawscore: nswgrsArr,
+      product: prodArr,
+      total_rawscore: total_rscore
+    });
+    this.updateRank(foeArr);
+    var meanval = total_rscore/nofStudents;
+    this.setState({mean: meanval}, () => {this.updateStudents(nofItems - Math.round(meanval), nswgrsArr)});
   }
 
   arrangeData(){
@@ -247,16 +247,16 @@ class ItemAnalysis extends Component{
           item_froe: item_froe1[i],
           foe_rank: foe_rank1[i],
           rawscore: total-i,
-          ns_rawscore: ns_rawscore1[total-i],
-          prod: prod1[total-i]
+          ns_rawscore: ns_rawscore1[i],
+          prod: prod1[i]
         }
       )
     }
     data.push(
       {
         rawscore: 0,
-        ns_rawscore: ns_rawscore1[0],
-        prod: prod1[0]
+        ns_rawscore: ns_rawscore1[total],
+        prod: prod1[total]
       }
     );
     data.push(
@@ -265,8 +265,6 @@ class ItemAnalysis extends Component{
         prod: this.state.total_rawscore
       }
     );
-    console.dir(data);
-    this.render();
   }
 
   render(){
@@ -276,8 +274,13 @@ class ItemAnalysis extends Component{
         <Link to="/">Back</Link>
         <table class="bordered">
         <tbody>
+          <br></br>
         <tr>
+          <CSVReader onFileLoaded={(filedata, fileInfo) => this.handleFiles(filedata, fileInfo)} />
         </tr>
+        <tr> <td> <b> Files uploaded: {this.state.number_of_files}</b></td></tr>
+        <br></br>
+        <button onClick={this.handleMerge}> Merge Uploaded Files</button>
         </tbody>
         </table>
         <div>
@@ -289,9 +292,9 @@ class ItemAnalysis extends Component{
             <td> <input type="text" key={10140} id={10140} onChange={this.filenameHandler} placeholder={"Untitled"}></input> </td>
             </tr>
             <tr>
-            <td ><b>Number of Items</b> <input type="number" key={10141} id={10141} onChange={this.numitemsHandler} default={10} placeholder={10}></input> </td>
-              <td ><b>Total number of students</b> <input type="number" key={10141} id={10141} onChange={this.totalHandler}></input> </td>
-              <td> <b>Year and Section</b> <input type="text" key={10142} id={10142} onChange={this.sectionHandler} placeholder={"Year and Section"}></input> </td>
+            <td ><b>Number of Items: </b> {this.state.number_of_items}  </td>
+              <td ><b>Total number of students: </b> {this.state.total_num_of_students} </td>
+              <td> <b>Year level</b> <input type="text" key={10142} id={10142} onChange={this.sectionHandler} placeholder={"Year"}></input> </td>
               <td> <b>Subject </b><input type="text" key={10143} id={10143} onChange={this.subjectHandler} placeholder={"Subject"}></input> </td>
             </tr>
             <tr>
@@ -302,7 +305,7 @@ class ItemAnalysis extends Component{
               <td id="stick"><b>Number of Students who got the Raw Score</b></td>
               <td id="stick"><b>Product (Raw Score x Number of Students who got the Raw Score)</b></td>
               {/* Download button */}
-              <td id="stick"> <CSVLink data={data} headers={headers} filename={this.state.filename +".csv"} onClick={this.arrangeData}>
+              <td id="stick"> <CSVLink data={data} headers={headers} filename={this.state.filename +".csv"}>
               <b>Save File</b> </CSVLink> </td>
             </tr>
               {this.createItems()}
@@ -332,4 +335,4 @@ class ItemAnalysis extends Component{
   }
 }
 
-export default ItemAnalysis;
+export default CombineItemAnalysis;

@@ -4,7 +4,7 @@ const db = mysql.createPool({
   host: 'localhost',
   user: 'aia',
   password: 'aia',
-  database: 'AIA',
+  database: 'aia',
   dateStrings: true
 });
 
@@ -17,6 +17,6 @@ db.getConnection(err => {
   }
 });
 
-db.query('USE AIA');
+db.query('USE aia');
 
 export default db;

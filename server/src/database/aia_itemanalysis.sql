@@ -18,7 +18,7 @@
 --
 -- Table structure for table `itemanalysis`
 --
-
+use aia;
 DROP TABLE IF EXISTS `itemanalysis`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
@@ -45,7 +45,7 @@ CREATE TABLE `itemanalysis` (
 
 LOCK TABLES `itemanalysis` WRITE;
 /*!40000 ALTER TABLE `itemanalysis` DISABLE KEYS */;
-INSERT INTO `itemanalysis` VALUES (1,1,0,0,50,0,0,0,0,'Mabini'),(1,2,0,0,50,0,0,0,0,'Rizal'),(2,3,0,0,50,0,0,0,0,'Rizal');
+/*INSERT INTO `itemanalysis` VALUES (1,1,0,0,50,0,0,0,0,'Mabini'),(1,2,0,0,50,0,0,0,0,'Rizal'),(2,3,0,0,50,0,0,0,0,'Rizal');
 /*!40000 ALTER TABLE `itemanalysis` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;

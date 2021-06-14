@@ -1,0 +1,37 @@
+.feed {
+	position: relative;
+	margin: auto;
+	font:0.85em/1.5 sans-serif;
+    color:#333;
+    background-color:#fff;
+    padding:1em;
+}
+
+.titlePage {
+	position: relative;
+	margin: auto;
+	text-align: center;
+	background-color:rgb(247, 233, 221);
+}
+
+#stick{
+	background-color: #eee;
+	position: sticky;
+	top: -1px;
+	z-index: 2;
+}
+
+table{
+	width:100%;
+	margin-bottom:1em;
+	border-collapse: collapse;
+}
+th{
+	font-weight:bold;
+	background-color:#ddd;
+}
+th,
+td{
+	padding:0.5em;
+	border:1px solid #ccc;
+}

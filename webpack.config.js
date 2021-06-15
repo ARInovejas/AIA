@@ -1,4 +1,5 @@
 module.exports = {
+    mode: 'production',
     entry: ['babel-polyfill', './src/index.js'],
     output: {
       path: __dirname + '/build',

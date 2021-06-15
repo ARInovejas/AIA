@@ -30,9 +30,8 @@
   },
   "scripts": {
     "build": "webpack",
-    "start": "echo 'yes' | webpack serve"
+    "start": "webpack serve"
   },
-  "proxy": "http://localhost:3001/",
   "babel": {
     "presets": [
       "@babel/env",

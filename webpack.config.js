@@ -13,8 +13,6 @@ module.exports = {
       ]
     },
     devServer: {
-      port: (process.env.port || 80),
-      host: '0.0.0.0',
       contentBase: './build',
       inline: true
     }

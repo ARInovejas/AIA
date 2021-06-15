@@ -11,10 +11,5 @@ module.exports = {
         { test: /\.ts$/, use: 'ts-loader' },
         { test: /\.js$/, use: 'babel-loader'}
       ]
-    },
-    devServer: {
-      port: (process.env.port || 80),
-      contentBase: './build',
-      inline: true
     }
   }

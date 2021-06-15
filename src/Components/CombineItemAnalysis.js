@@ -51,6 +51,7 @@ class CombineItemAnalysis extends Component{
       section: "",
       item_foe: item_freq.slice(),
       num_of_studs_rawscore: nswgrs.slice(),
+      ns_sum: 0,
       product: nswgrs.slice(),
       rank: rank_arr.slice(),
       number_of_files: 0,
@@ -184,6 +185,7 @@ class CombineItemAnalysis extends Component{
 
     var foeSum = 0;
     var nswgrsSum = 0;
+    var nsSum=0;
 
     var foeArr = [];
     var nswgrsArr = [];
@@ -217,6 +219,7 @@ class CombineItemAnalysis extends Component{
     prodArr.push(0);
     for (let i = 0; i < total_files; i++) {
       const element = farray[i][farray[0].length-1];
+      nsSum += parseInt(element[7]);
       total_rscore += parseInt(element[8]);
       
     }
@@ -224,6 +227,7 @@ class CombineItemAnalysis extends Component{
       total_num_of_students: nofStudents,
       item_foe: foeArr,
       num_of_studs_rawscore: nswgrsArr,
+      ns_sum: nsSum,
       product: prodArr,
       total_rawscore: total_rscore
     });
@@ -304,6 +308,7 @@ class CombineItemAnalysis extends Component{
               <td id="stick"><b>Raw Score</b></td>
               <td id="stick"><b>Number of Students who got the Raw Score</b></td>
               <td id="stick"><b>Product (Raw Score x Number of Students who got the Raw Score)</b></td>
+              <td id="stick"><button onClick={this.arrangeData}><b> Save Data </b></button></td>
               {/* Download button */}
               <td id="stick"> <CSVLink data={data} headers={headers} filename={this.state.filename +".csv"}>
               <b>Save File</b> </CSVLink> </td>

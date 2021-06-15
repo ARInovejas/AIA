@@ -50,6 +50,7 @@ class ItemAnalysis extends Component{
       section: "",
       item_foe: item_freq.slice(),
       num_of_studs_rawscore: nswgrs.slice(),
+      ns_sum: 0,
       product: nswgrs.slice(),
       rank: rank_arr.slice()
     }
@@ -147,15 +148,25 @@ class ItemAnalysis extends Component{
     stdnts[e.target.id] = val;
     prod[e.target.id] = e.target.id * val;
     
+    var nSum = computeNSSum(stdnts);
     var total = this.state.total_num_of_students;
     var meanval = this.computeMean(total);
     
     this.setState({
       num_of_studs_rawscore: stdnts,
+      ns_sum: nSum,
       product: prod,
       mean: meanval
     }, () => {this.updateStudents(Math.round(meanval))});
     
+  }
+
+  computeNSSum(stdnts){
+    var sum = 0;
+    for (let i = 0; i < stdnts.length; i++) {
+      sum += stdnts[i];
+    }
+    return(sum);
   }
 
   computeMean(total){
@@ -224,7 +235,7 @@ class ItemAnalysis extends Component{
           <td></td>
           <td></td>
           <td>Total</td>
-          <td></td>
+          <td> {this.state.ns_sum} </td>
           <td> {this.state.total_rawscore} </td>
         </tr>
         )
@@ -262,6 +273,7 @@ class ItemAnalysis extends Component{
     data.push(
       {
         rawscore: "Total",
+        ns_rawscore: this.state.ns_sum,
         prod: this.state.total_rawscore
       }
     );
@@ -301,8 +313,9 @@ class ItemAnalysis extends Component{
               <td id="stick"><b>Raw Score</b></td>
               <td id="stick"><b>Number of Students who got the Raw Score</b></td>
               <td id="stick"><b>Product (Raw Score x Number of Students who got the Raw Score)</b></td>
+              <td id="stick"><button onClick={this.arrangeData}><b> Save Data </b></button></td>
               {/* Download button */}
-              <td id="stick"> <CSVLink data={data} headers={headers} filename={this.state.filename +".csv"} onClick={this.arrangeData}>
+              <td id="stick"> <CSVLink data={data} headers={headers} filename={this.state.filename +".csv"}>
               <b>Save File</b> </CSVLink> </td>
             </tr>
               {this.createItems()}
